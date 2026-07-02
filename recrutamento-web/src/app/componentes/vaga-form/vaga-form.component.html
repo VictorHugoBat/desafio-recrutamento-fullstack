@@ -1,0 +1,22 @@
+<div style="padding: 20px; border: 2px dashed #ccc; margin-bottom: 20px; border-radius: 8px; background: #f9f9f9;">
+  <h3>Área do Administrador - Cadastrar Nova Vaga</h3>
+  
+  <div style="margin-bottom: 10px;">
+    <label>Título da Vaga:</label><br>
+    <input type="text" [(ngModel)]="novaVaga.titulo" style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <label>Descrição:</label><br>
+    <textarea [(ngModel)]="novaVaga.descricao" style="width: 100%; padding: 8px;"></textarea>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <label>Requisitos:</label><br>
+    <input type="text" [(ngModel)]="novaVaga.requisitos" style="width: 100%; padding: 8px;">
+  </div>
+
+  <button (click)='salvarVaga()' style="background: green; color: white; padding: 10px; border: none; cursor: pointer; border-radius: 4px;">
+    Salvar Vaga
+  </button>
+</div>

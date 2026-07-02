@@ -1,0 +1,96 @@
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+  
+  <div style="margin-bottom: 30px;">
+    <label><strong>Pesquisar por título ou requisitos:</strong></label>
+    <input type="text" 
+           [(ngModel)]="termoBusca" 
+           placeholder="Ex: Java, Spring, Angular..." 
+           style="width: 100%; padding: 12px; margin-top: 8px; border-radius: 5px; border: 1px solid #ccc;">
+  </div>
+
+  <h2>Vagas Disponíveis</h2>
+
+  <div *ngIf="vagasFiltradas.length === 0" style="color: gray; font-style: italic;">
+    Nenhuma vaga encontrada para sua busca.
+  </div>
+
+  <div *ngFor="let v of vagasFiltradas" 
+       style="border: 1px solid #ddd; padding: 20px; margin-bottom: 15px; border-radius: 10px; background-color: #fff; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);">
+    
+    <h3 style="margin-top: 0; color: #333;">{{ v.titulo }}</h3>
+    <p style="color: #666;">{{ v.descricao }}</p>
+    <p><strong>Requisitos específicos:</strong> {{ v.requisitos }}</p>
+    
+    <div style="margin-top: 15px;">
+      <!-- Botão visível para todos -->
+      <button (click)="candidatar(v)" 
+              style="background: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-weight: bold;">
+        Candidatar-se
+      </button>
+
+      <ng-container *ngIf="authService.isAdmin()">
+        <button (click)="prepararEdicao(v)" 
+                style="background: #ffc107; color: black; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; margin-left: 10px; font-weight: bold;">
+          Editar
+        </button>
+        
+        <button (click)="excluirVaga(v.id!)" 
+                style="background: #dc3545; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; margin-left: 10px;">
+          Excluir Vaga
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+  <hr style="margin: 40px 0; border: 1px solid #eee;">
+
+  <!-- 3. PAINEL DO CANDIDATO (Bônus - Só aparece para o Colaborador) -->
+  <div *ngIf="!authService.isAdmin()" style="background: #f4f7f6; padding: 20px; border-radius: 10px; border-left: 6px solid #007bff;">
+    <h2>📊 Meu Painel de Candidaturas</h2>
+    <p style="color: #666;">Acompanhe aqui o status das suas vagas e feedbacks dos gestores.</p>
+    
+    <div *ngIf="minhasCandidaturas.length === 0" style="color: gray;">Você ainda não se candidatou a nenhuma vaga.</div>
+    
+    <div *ngFor="let c of minhasCandidaturas" 
+         style="background: white; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <strong>Vaga:</strong> {{ c.vaga.titulo }} <br>
+        <strong>Status:</strong> 
+        <span [style.color]="c.status === 'APROVADO' ? 'green' : (c.status === 'REPROVADO' ? 'red' : 'orange')" style="font-weight: bold;">
+          {{ c.status }}
+        </span>
+        <p *ngIf="c.feedback" style="margin-top: 5px; font-size: 0.9em; background: #fffde7; padding: 5px; border: 1px dashed #fbc02d;">
+          <strong>Feedback do RH:</strong> {{ c.feedback }}
+        </p>
+    </div>
+  </div>
+
+  <div *ngIf="authService.isAdmin()" style="background: #fff5f5; padding: 20px; border-radius: 10px; border-left: 6px solid #dc3545;">
+    <h2>⚖️ Gestão e Avaliação de Candidatos</h2>
+    <p style="color: #666;">Avalie os interessados nas vagas abertas.</p>
+
+    <div *ngIf="todasCandidaturas.length === 0" style="color: gray;">Nenhuma candidatura registrada até o momento.</div>
+
+    <table *ngIf="todasCandidaturas.length > 0" style="width: 100%; border-collapse: collapse; background: white; margin-top: 10px;">
+        <thead>
+            <tr style="background: #f8d7da; text-align: left;">
+                <th style="padding: 10px; border: 1px solid #ddd;">Candidato</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Vaga</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let c of todasCandidaturas">
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ c.candidato.nome }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ c.vaga.titulo }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">
+                    <button (click)="avaliar(c.id)" 
+                            style="background: #6f42c1; color: white; border: none; padding: 5px 12px; cursor: pointer; border-radius: 4px;">
+                        Avaliar / Feedback
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+  </div>
+
+</div>

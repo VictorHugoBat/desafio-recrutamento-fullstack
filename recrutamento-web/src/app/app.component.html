@@ -1,0 +1,39 @@
+<div style="background: #333; color: white; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
+  <h1>Portal de Recrutamento Interno</h1>
+  
+
+  <button *ngIf="authService.isLogado()" (click)="authService.logout()" 
+          style="background: #666; color: white; border: none; padding: 5px 15px; cursor: pointer; border-radius: 4px;">
+    Sair (Logoff)
+  </button>
+</div>
+
+<main style="padding: 20px; font-family: Arial, sans-serif;">
+
+
+  <div *ngIf="!authService.isLogado()" style="text-align: center; padding: 50px; border: 1px solid #eee; border-radius: 10px;">
+    <h2>Bem-vindo! Identifique-se para continuar:</h2>
+    <button (click)="authService.login('ADMIN')" style="padding: 15px 30px; background: #333; color: white; border: none; cursor: pointer; border-radius: 5px; margin: 10px;">
+      Entrar como ADMINISTRADOR
+    </button>
+    <button (click)="authService.login('CANDIDATO')" style="padding: 15px 30px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; margin: 10px;">
+      Entrar como COLABORADOR
+    </button>
+  </div>
+
+
+  <div *ngIf="authService.isLogado()">
+    
+    <p>Olá, <strong>{{ authService.getUsuario()?.nome }}</strong>!</p>
+
+  
+    <div *ngIf="authService.isAdmin()">
+        <app-vaga-form></app-vaga-form>
+        <hr style="margin: 30px 0;">
+    </div>
+
+  
+    <app-vaga-lista></app-vaga-lista>
+  </div>
+
+</main>
