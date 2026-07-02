@@ -1,0 +1,14 @@
+# Pastas pesadas do Angular
+node_modules/
+.angular/
+dist/
+
+# Pastas pesadas do Java
+target/
+.settings/
+.classpath
+.project
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
